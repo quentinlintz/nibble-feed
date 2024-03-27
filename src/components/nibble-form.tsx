@@ -18,16 +18,17 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 
 const NibbleFormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  topic: z
+    .string()
+    .min(2, { message: "Topic must be at least 2 characters." })
+    .max(50, { message: "Topic must not exceed 50 characters." }),
 });
 
 export function NibbleForm() {
   const form = useForm<z.infer<typeof NibbleFormSchema>>({
     resolver: zodResolver(NibbleFormSchema),
     defaultValues: {
-      username: "",
+      topic: "",
     },
   });
 
@@ -47,7 +48,7 @@ export function NibbleForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
         <FormField
           control={form.control}
-          name="username"
+          name="topic"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Create Your AI Study Guide</FormLabel>
