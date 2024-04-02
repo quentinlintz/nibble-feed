@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 
 interface NibbleListProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

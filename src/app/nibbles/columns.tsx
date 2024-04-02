@@ -10,18 +10,22 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-
-export type Nibble = {
-  id: string;
-  topic: string;
-  status: "creating" | "new" | "in progress" | "completed";
-};
+import Link from "next/link";
+import { Nibble } from "@/types/nibble";
 
 export const columns: ColumnDef<Nibble>[] = [
   {
     accessorKey: "topic",
     header: "Topic",
+    cell: ({ row: { original } }) => {
+      const { uuid, topic } = original;
+
+      return (
+        <Link href={`/nibbles/${uuid}`} className="underline">
+          {topic}
+        </Link>
+      );
+    },
   },
   {
     id: "actions",
