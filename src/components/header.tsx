@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { auth, signIn } from "@/auth";
+import { auth } from "@/auth";
 import Avatar from "./avatar";
+import * as actions from "@/actions";
 
 export default async function Header() {
   const session = await auth();
@@ -11,12 +12,7 @@ export default async function Header() {
     authContent = <Avatar src={session.user.image ?? ""} />;
   } else {
     authContent = (
-      <form
-        action={async () => {
-          "use server";
-          await signIn("google");
-        }}
-      >
+      <form action={actions.signIn}>
         <Button size="sm" variant="outline">
           Sign In
         </Button>
@@ -32,7 +28,7 @@ export default async function Header() {
             Nibble Feed
           </span>
         </Link>
-        <div className="hidden sm:flex flex-1 justify-end items-center space-x-4">
+        <div className="flex flex-1 justify-end items-center space-x-4">
           {authContent}
         </div>
       </nav>
