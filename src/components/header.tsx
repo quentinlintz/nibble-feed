@@ -1,7 +1,29 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { auth, signIn } from "@/auth";
+import Avatar from "./avatar";
 
-export default function Header() {
+export default async function Header() {
+  const session = await auth();
+
+  let authContent: React.ReactNode;
+  if (session?.user) {
+    authContent = <Avatar src={session.user.image ?? ""} />;
+  } else {
+    authContent = (
+      <form
+        action={async () => {
+          "use server";
+          await signIn("google");
+        }}
+      >
+        <Button size="sm" variant="outline">
+          Sign In
+        </Button>
+      </form>
+    );
+  }
+
   return (
     <header className="fixed inset-x-0 top-0 h-16 z-50 flex items-center px-4 sm:px-6 lg:px-8 bg-opacity-90 backdrop-blur-sm border-b border-gray-200 backdrop-filter dark:border-gray-800 dark:bg-gray-950/90">
       <nav className="flex-1 flex items-center justify-between">
@@ -11,14 +33,7 @@ export default function Header() {
           </span>
         </Link>
         <div className="hidden sm:flex flex-1 justify-end items-center space-x-4">
-          <Button size="sm" variant="outline">
-            Sign In
-          </Button>
-        </div>
-        <div className="sm:hidden flex items-center">
-          <Button size="sm" variant="outline">
-            Sign In
-          </Button>
+          {authContent}
         </div>
       </nav>
     </header>
