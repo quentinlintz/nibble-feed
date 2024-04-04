@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import paths from "@/paths";
 
 export default function NibbleNotFound() {
   return (
@@ -11,7 +12,7 @@ export default function NibbleNotFound() {
         The Nibble you are looking for isn&apos;t here.
       </h4>
       <div className="text-center">
-        <Link href="/nibbles">
+        <Link href={paths.nibblesList()}>
           <Button className="mx-auto">Your Nibbles</Button>
         </Link>
       </div>

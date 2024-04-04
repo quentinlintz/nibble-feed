@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { Nibble } from "@/types/nibble";
+import paths from "@/paths";
 
 export const columns: ColumnDef<Nibble>[] = [
   {
@@ -21,7 +22,7 @@ export const columns: ColumnDef<Nibble>[] = [
       const { uuid, topic } = original;
 
       return (
-        <Link href={`/nibbles/${uuid}`} className="underline">
+        <Link href={paths.nibblesShow(uuid)} className="underline">
           {topic}
         </Link>
       );
