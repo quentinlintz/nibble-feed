@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,8 +30,11 @@ const NibbleFormSchema = z.object({
 });
 
 export function NibbleForm() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const session = useSession();
   const { toast } = useToast();
+
   const form = useForm<z.infer<typeof NibbleFormSchema>>({
     resolver: zodResolver(NibbleFormSchema),
     defaultValues: {
@@ -46,8 +51,9 @@ export function NibbleForm() {
       });
       return;
     }
-
+    setIsLoading(true);
     actions.createNibble({ topic: data.topic });
+    setIsLoading(false);
   }
 
   return (
@@ -70,7 +76,16 @@ export function NibbleForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Generate Study Guide</Button>
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <div>
+              <Loader2 className="animate-spin" />
+              Creating Nibble
+            </div>
+          ) : (
+            "Generate Study Guide"
+          )}
+        </Button>
       </form>
       <Toaster />
     </Form>

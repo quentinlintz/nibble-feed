@@ -20,25 +20,43 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSession } from "next-auth/react";
+import { ToastAction } from "./ui/toast";
+import { Nibble } from "@/db/schema";
 import * as actions from "@/actions";
+import { useToast } from "./ui/use-toast";
+import { Toaster } from "./ui/toaster";
+import { columns } from "./nibble-list-columns";
 
 interface NibbleListProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
 export default function NibbleList<TData, TValue>({
-  columns,
   data,
 }: NibbleListProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const { toast } = useToast();
 
-  const table = useReactTable({
+  const confirmDelete = (nibble: Nibble) => {
+    toast({
+      title: "Confirm deletion ❌",
+      description: `Would you like to delete the nibble "${nibble.topic}"?`,
+      action: (
+        <ToastAction
+          altText="Delete this Nibble"
+          onClick={async () => await actions.deleteNibble(nibble)}
+        >
+          Delete
+        </ToastAction>
+      ),
+    });
+  };
+
+  const table = useReactTable<TData>({
     data,
-    columns,
+    columns: columns(confirmDelete) as ColumnDef<TData, TValue>[],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
@@ -98,11 +116,8 @@ export default function NibbleList<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
+                <TableCell colSpan={columns.length} className="h-24">
+                  No Nibbles found.
                 </TableCell>
               </TableRow>
             )}
@@ -127,6 +142,7 @@ export default function NibbleList<TData, TValue>({
           Next
         </Button>
       </div>
+      <Toaster />
     </div>
   );
 }

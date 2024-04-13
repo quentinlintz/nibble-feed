@@ -14,7 +14,9 @@ import Link from "next/link";
 import paths from "@/paths";
 import { Nibble } from "@/db/schema";
 
-export const columns: ColumnDef<Nibble>[] = [
+export const columns = (
+  confirmDelete: (nibble: Nibble) => void
+): ColumnDef<Nibble>[] => [
   {
     accessorKey: "topic",
     header: "Topic",
@@ -30,7 +32,7 @@ export const columns: ColumnDef<Nibble>[] = [
   },
   {
     id: "actions",
-    cell: () => {
+    cell: ({ row: { original } }) => {
       return (
         <div className="flex justify-end">
           <DropdownMenu>
@@ -42,7 +44,10 @@ export const columns: ColumnDef<Nibble>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem className="text-red-500">
+              <DropdownMenuItem
+                className="text-red-500"
+                onClick={() => confirmDelete(original)}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>

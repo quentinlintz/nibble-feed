@@ -8,6 +8,9 @@ const paths = {
   nibblesShow(slug: string) {
     return `/nibbles/${slug}`;
   },
+  signIn() {
+    return "/api/auth/signin";
+  },
 };
 
 export default paths;

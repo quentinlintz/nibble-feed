@@ -5,25 +5,33 @@ import { db } from "@/db";
 import { Nibble, nibbles } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
+import paths from "@/paths";
+import { revalidatePath } from "next/cache";
 
 interface CreateNibbleParams {
   topic: string;
 }
 
-export async function createNibble(params: CreateNibbleParams) {
+export async function createNibble(params: CreateNibbleParams): Promise<void> {
   const session = await auth();
-
   const userId = session?.user?.id;
 
   if (!userId) {
-    throw new Error("User not found.");
+    redirect(paths.signIn());
   }
 
-  db.insert(nibbles).values({
-    topic: params.topic,
-    userId,
-    status: "creating",
-  });
+  // Deduct the user's credit balance
+
+  const [{ nibbleId }] = await db
+    .insert(nibbles)
+    .values({
+      topic: params.topic,
+      userId,
+      status: "creating",
+    })
+    .returning({ nibbleId: nibbles.id });
+
+  redirect(paths.nibblesShow(nibbleId));
 }
 
 export async function getNibbles(): Promise<Nibble[]> {
@@ -31,18 +39,39 @@ export async function getNibbles(): Promise<Nibble[]> {
   const userId = session?.user?.id;
 
   if (!userId) {
-    redirect("/api/auth/signin?callbackUrl=/nibbles");
+    redirect(`${paths.signIn()}?callbackUrl=/nibbles`);
   }
 
   return db.select().from(nibbles).where(eq(nibbles.userId, userId));
 }
 
 export async function getNibble(id: string): Promise<Nibble> {
-  const result = await db.select().from(nibbles).where(eq(nibbles.id, id));
+  const [result] = await db
+    .select()
+    .from(nibbles)
+    .where(eq(nibbles.id, id))
+    .limit(1);
 
-  if (result.length === 0) {
+  if (!result) {
     notFound();
   }
 
-  return result[0];
+  return result;
+}
+
+export async function deleteNibble(nibble: Nibble): Promise<void> {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    redirect(`${paths.signIn()}?callbackUrl=/nibbles`);
+  }
+
+  if (userId === nibble.userId) {
+    await db.delete(nibbles).where(eq(nibbles.id, nibble.id));
+  } else {
+    notFound();
+  }
+
+  revalidatePath(paths.nibblesList());
 }

@@ -1,6 +1,4 @@
 import NibbleList from "@/components/nibble-list";
-import { columns } from "./columns";
-import { Nibble } from "@/db/schema";
 import * as actions from "@/actions";
 
 export default async function NibbleListPage() {
@@ -12,7 +10,7 @@ export default async function NibbleListPage() {
         Your Nibbles
       </h1>
       <div className="mx-auto max-w-lg">
-        <NibbleList columns={columns} data={data} />
+        <NibbleList data={data} />
       </div>
     </div>
   );
