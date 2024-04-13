@@ -11,18 +11,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { Nibble } from "@/types/nibble";
 import paths from "@/paths";
+import { Nibble } from "@/db/schema";
 
 export const columns: ColumnDef<Nibble>[] = [
   {
     accessorKey: "topic",
     header: "Topic",
     cell: ({ row: { original } }) => {
-      const { uuid, topic } = original;
+      const { id, topic } = original;
 
       return (
-        <Link href={paths.nibblesShow(uuid)} className="underline">
+        <Link href={paths.nibblesShow(id)} className="underline">
           {topic}
         </Link>
       );

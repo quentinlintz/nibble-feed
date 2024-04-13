@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import {
@@ -17,28 +18,49 @@ import * as actions from "@/actions";
 
 export default function Header() {
   const session = useSession();
+  const [open, setOpen] = useState(false);
 
   let authContent: React.ReactNode;
   if (session.status === "loading") {
     authContent = null;
   } else if (session.data?.user) {
     authContent = (
-      <Popover>
-        <PopoverTrigger>
-          <ReactAvatar>
-            <AvatarImage
-              src={session.data?.user.image || ""}
-              className="w-10 h-10 rounded-full"
-            />
-            <AvatarFallback>NF</AvatarFallback>
-          </ReactAvatar>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild aria-expanded={open}>
+          <div className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-full">
+            <span className="mr-2">Account</span>
+            <ReactAvatar>
+              <AvatarImage
+                src={session.data?.user.image || ""}
+                className="w-10 h-10 rounded-full"
+              />
+              <AvatarFallback>NF</AvatarFallback>
+            </ReactAvatar>
+          </div>
         </PopoverTrigger>
-        <PopoverContent className="m-8">
-          <form action={actions.signOut}>
-            <Button size="sm" variant="destructive">
-              Sign Out
-            </Button>
-          </form>
+        <PopoverContent
+          align="end"
+          className="rounded m-4 p-4 bg-gray-200 border border-gray-400"
+        >
+          <div className="flex flex-col gap-4 items-center">
+            <h3 className="font-bold tracking-tight">
+              {session.data.user.name || session.data.user.email}
+            </h3>
+            <Link href="/nibbles">
+              <Button
+                onClick={() => setOpen(false)}
+                size="sm"
+                variant="outline"
+              >
+                Nibbles
+              </Button>
+            </Link>
+            <form action={actions.signOut}>
+              <Button size="sm" variant="destructive">
+                Sign Out
+              </Button>
+            </form>
+          </div>
         </PopoverContent>
       </Popover>
     );
@@ -55,7 +77,7 @@ export default function Header() {
   <header className="fixed inset-x-0 top-0 h-16 z-50 flex items-center px-4 sm:px-6 lg:px-8 bg-opacity-90 backdrop-blur-sm border-b border-gray-200 backdrop-filter dark:border-gray-800 dark:bg-gray-950/90">
     <nav className="flex-1 flex items-center justify-between">
       <Link className="flex items-center" href="/">
-        <span className="ml-2 font-semibold sm:text-base lg:text-lg">
+        <span className="ml-2 font-extrabold text-xl tracking-tight">
           Nibble Feed
         </span>
       </Link>
@@ -69,11 +91,11 @@ export default function Header() {
     <header className="fixed inset-x-0 top-0 h-16 z-50 flex items-center px-4 sm:px-6 lg:px-8 bg-opacity-90 backdrop-blur-sm border-b border-gray-200 backdrop-filter dark:border-gray-800 dark:bg-gray-950/90">
       <nav className="flex-1 flex items-center justify-between">
         <Link className="flex items-center" href="/">
-          <span className="ml-2 font-semibold sm:text-base lg:text-lg">
+          <span className="ml-2 font-extrabold text-3xl tracking-tight">
             Nibble Feed
           </span>
         </Link>
-        <div className="flex flex-1 justify-end items-center space-x-4">
+        <div className="flex items-center justify-end space-x-4">
           {authContent}
         </div>
       </nav>

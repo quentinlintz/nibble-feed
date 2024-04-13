@@ -1,30 +1,10 @@
 import NibbleList from "@/components/nibble-list";
 import { columns } from "./columns";
-import { Nibble } from "@/types/nibble";
-
-async function getData(): Promise<Nibble[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      uuid: "728ed52f",
-      topic: "Housing Market",
-      status: "new",
-    },
-    {
-      uuid: "f7c0a2f9",
-      topic: "Climate Change",
-      status: "in progress",
-    },
-    {
-      uuid: "d8c7f6b4",
-      topic: "Remote Work",
-      status: "completed",
-    },
-  ];
-}
+import { Nibble } from "@/db/schema";
+import * as actions from "@/actions";
 
 export default async function NibbleListPage() {
-  const data = await getData();
+  const data = await actions.getNibbles();
 
   return (
     <div>

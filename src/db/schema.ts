@@ -6,6 +6,7 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
+import { InferSelectModel, sql } from "drizzle-orm";
 
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
@@ -58,3 +59,46 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 );
+
+export const nibbles = pgTable("nibble", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  topic: text("topic").notNull(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
+  status: text("status").notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updatedAt", { mode: "date" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const steps = pgTable("step", {
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  stepNumber: integer("stepNumber").notNull(),
+  content: text("content").notNull(),
+  nibbleId: text("nibbleId")
+    .notNull()
+    .references(() => nibbles.id, {
+      onDelete: "cascade",
+    }),
+  createdAt: timestamp("createdAt", { mode: "date" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: timestamp("updatedAt", { mode: "date" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+});
+
+export type Nibble = InferSelectModel<typeof nibbles>;
+export type Step = InferSelectModel<typeof steps>;
