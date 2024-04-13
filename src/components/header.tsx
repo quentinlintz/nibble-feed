@@ -28,35 +28,42 @@ export default function Header() {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild aria-expanded={open}>
           <div className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-full">
-            <span className="mr-2">Account</span>
+            <span className="mr-2 font-bold text-blue-500">
+              {session.data.user.credits}
+            </span>
             <ReactAvatar>
               <AvatarImage
-                src={session.data?.user.image || ""}
+                src={session.data.user.image || ""}
                 className="w-10 h-10 rounded-full"
               />
               <AvatarFallback>NF</AvatarFallback>
             </ReactAvatar>
           </div>
         </PopoverTrigger>
-        <PopoverContent
-          align="end"
-          className="rounded m-4 p-4 bg-gray-200 border border-gray-400"
-        >
-          <div className="flex flex-col gap-4 items-center">
-            <h3 className="font-bold tracking-tight">
+        <PopoverContent align="end" className="m-4 p-4">
+          <div className="flex flex-col gap-2 items-center bg-white rounded-lg shadow-lg p-4">
+            <div className="font-bold text-lg tracking-tight text-gray-700">
               {session.data.user.name || session.data.user.email}
-            </h3>
+            </div>
+
+            <div className="text-gray-500">
+              Credits:{" "}
+              <span className="font-bold text-blue-500">
+                {session.data.user.credits}
+              </span>
+            </div>
             <Link href="/nibbles">
               <Button
                 onClick={() => setOpen(false)}
                 size="sm"
                 variant="outline"
+                className="mt-4"
               >
                 Nibbles
               </Button>
             </Link>
             <form action={actions.signOut}>
-              <Button size="sm" variant="destructive">
+              <Button size="sm" variant="destructive" className="mt-2">
                 Sign Out
               </Button>
             </form>

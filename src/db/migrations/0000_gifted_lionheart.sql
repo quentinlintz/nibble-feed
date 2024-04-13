@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"name" text,
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
-	"image" text
+	"image" text,
+	"credits" integer DEFAULT 20 NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verificationToken" (

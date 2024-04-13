@@ -1,5 +1,5 @@
 {
-  "id": "ab3978a7-5056-4e60-a18d-ee91c794d652",
+  "id": "dd0cca0f-ca01-4fff-b12f-5b7fe3b542fb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -303,6 +303,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "credits": {
+          "name": "credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 20
         }
       },
       "indexes": {},

@@ -14,6 +14,7 @@ export const users = pgTable("user", {
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  credits: integer("credits").notNull().default(20),
 });
 
 export const accounts = pgTable(
@@ -102,3 +103,4 @@ export const steps = pgTable("step", {
 
 export type Nibble = InferSelectModel<typeof nibbles>;
 export type Step = InferSelectModel<typeof steps>;
+export type User = InferSelectModel<typeof users>;

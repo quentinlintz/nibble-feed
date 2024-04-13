@@ -1,7 +1,9 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
+import NextAuth, { NextAuthConfig, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/db";
+import { User, users } from "./db/schema";
+import { eq } from "drizzle-orm";
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
 
@@ -21,6 +23,19 @@ export const config = {
       clientSecret: GOOGLE_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      const [{ credits }] = await db
+        .select({ credits: users.credits })
+        .from(users)
+        .where(eq(users.id, user.id));
+
+      session.user.id = user.id;
+      session.user.credits = credits;
+
+      return session;
+    },
+  },
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
