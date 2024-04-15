@@ -19,7 +19,7 @@ export async function deductCredits(
   amount: number
 ): Promise<void> {
   if (amount < 0) {
-    throw new Error("Invalid amount");
+    throw new Error("Insufficient credits");
   }
 
   await db

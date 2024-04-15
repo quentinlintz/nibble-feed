@@ -15,7 +15,9 @@ interface CreateNibbleParams {
   topic: string;
 }
 
-export async function createNibble(params: CreateNibbleParams): Promise<void> {
+export async function createNibble(
+  params: CreateNibbleParams
+): Promise<Nibble> {
   const session = await auth();
   const userId = session?.user?.id;
 
@@ -30,18 +32,18 @@ export async function createNibble(params: CreateNibbleParams): Promise<void> {
     throw new Error("Insufficient credits");
   }
 
-  const [{ nibbleId }] = await db
+  const [nibble] = await db
     .insert(nibbles)
     .values({
       topic: params.topic,
       userId,
       status: "creating",
     })
-    .returning({ nibbleId: nibbles.id });
+    .returning();
 
   await deductCredits(userId, NIBBLE_CREDIT_COST);
 
-  await redirect(paths.nibblesShow(nibbleId));
+  return nibble;
 }
 
 export async function getNibbles(): Promise<Nibble[]> {

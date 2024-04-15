@@ -4,9 +4,12 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 
+import { useToast } from "./ui/use-toast";
+import { Toaster } from "./ui/toaster";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,8 +22,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import * as actions from "@/actions";
-import { useToast } from "./ui/use-toast";
-import { Toaster } from "./ui/toaster";
+import paths from "@/paths";
+import { Nibble } from "@/db/schema";
 
 const NibbleFormSchema = z.object({
   topic: z
@@ -32,6 +35,7 @@ const NibbleFormSchema = z.object({
 export function NibbleForm() {
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
   const session = useSession();
   const { toast } = useToast();
 
@@ -42,18 +46,33 @@ export function NibbleForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof NibbleFormSchema>) {
+  async function onSubmit(data: z.infer<typeof NibbleFormSchema>) {
     if (!session.data) {
       toast({
-        title: "Please sign in. 🙏",
-        description:
-          "New users get free credits, but you need to sign in to use them.",
+        title: "Please sign in.",
+        description: "You need to be signed in to create a Nibble.",
       });
       return;
     }
+
     setIsLoading(true);
-    actions.createNibble({ topic: data.topic });
-    setIsLoading(false);
+    let nibble: Nibble;
+    try {
+      nibble = await actions.createNibble({ topic: data.topic });
+
+      toast({
+        title: "Nibble Created 👍",
+        description: `Your Nibble: "${nibble.topic}" has been successfully created!`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error 😞",
+        description: (error as Error).message || "Failed to create Nibble.",
+      });
+      return;
+    }
+
+    router.push(paths.nibblesShow(nibble.id));
   }
 
   return (
@@ -78,7 +97,7 @@ export function NibbleForm() {
         />
         <Button type="submit" disabled={isLoading}>
           {isLoading ? (
-            <div>
+            <div className="flex flex-row gap-2">
               <Loader2 className="animate-spin" />
               Creating Nibble
             </div>
