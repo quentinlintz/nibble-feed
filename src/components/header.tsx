@@ -63,7 +63,7 @@ export default function Header() {
               </span>
             </div>
             <div className="w-full mt-4">
-              <Link href="/nibbles/new" passHref>
+              <Link href="/" passHref>
                 <Button
                   onClick={() => setOpen(false)}
                   size="sm"

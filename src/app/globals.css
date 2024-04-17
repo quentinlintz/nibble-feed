@@ -74,3 +74,42 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes moveBg {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.animated-bg::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 85%;
+  background: linear-gradient(
+    90deg,
+    #93c5fd,
+    #a5b4fc,
+    #c4b5fd,
+    #d8b4fe,
+    #e9d5fe,
+    #fbcfe8
+  );
+  background-size: 50% 50%;
+  animation: moveBg 10s ease infinite;
+  z-index: -1;
+  filter: blur(200px);
+}
+
+.animated-bg {
+  position: relative;
+  overflow: hidden;
+}
