@@ -49,8 +49,9 @@ export function NibbleForm() {
   async function onSubmit(data: z.infer<typeof NibbleFormSchema>) {
     if (!session.data) {
       toast({
-        title: "Please sign in.",
-        description: "You need to be signed in to create a Nibble.",
+        title: "Please sign in 🙏",
+        description:
+          "Creating Nibbles is free, but you need to sign in to use your credits.",
       });
       return;
     }
@@ -59,20 +60,14 @@ export function NibbleForm() {
     let nibble: Nibble;
     try {
       nibble = await actions.createNibble({ topic: data.topic });
-
-      toast({
-        title: "Nibble Created 👍",
-        description: `Your Nibble: "${nibble.topic}" has been successfully created!`,
-      });
+      router.push(paths.nibblesShow(nibble.id));
     } catch (error) {
       toast({
         title: "Error 😞",
         description: (error as Error).message || "Failed to create Nibble.",
       });
-      return;
+      setIsLoading(false);
     }
-
-    router.push(paths.nibblesShow(nibble.id));
   }
 
   return (

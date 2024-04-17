@@ -36,7 +36,12 @@ export default function Header() {
                 src={session.data.user.image || ""}
                 className="w-10 h-10 rounded-full"
               />
-              <AvatarFallback>NF</AvatarFallback>
+              <AvatarFallback>
+                {session.data.user.name
+                  ?.split(" ")
+                  .map((name) => name[0])
+                  .join("")}{" "}
+              </AvatarFallback>
             </ReactAvatar>
           </div>
         </PopoverTrigger>
