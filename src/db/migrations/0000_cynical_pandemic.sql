@@ -30,9 +30,10 @@ CREATE TABLE IF NOT EXISTS "session" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "step" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"stepNumber" integer NOT NULL,
-	"content" text NOT NULL,
 	"nibbleId" text NOT NULL,
+	"stepNumber" integer NOT NULL,
+	"stepType" text NOT NULL,
+	"content" jsonb NOT NULL,
 	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
 );

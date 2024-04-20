@@ -4,6 +4,7 @@ import {
   text,
   primaryKey,
   integer,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { InferSelectModel, sql } from "drizzle-orm";
@@ -86,13 +87,14 @@ export const steps = pgTable("step", {
     .notNull()
     .primaryKey()
     .default(sql`gen_random_uuid()`),
-  stepNumber: integer("stepNumber").notNull(),
-  content: text("content").notNull(),
   nibbleId: text("nibbleId")
     .notNull()
     .references(() => nibbles.id, {
       onDelete: "cascade",
     }),
+  stepNumber: integer("stepNumber").notNull(),
+  stepType: text("stepType").notNull(),
+  content: jsonb("content").notNull(),
   createdAt: timestamp("createdAt", { mode: "date" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
