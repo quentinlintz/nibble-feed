@@ -28,7 +28,7 @@ export default function Header() {
     authContent = (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild aria-expanded={open}>
-          <div className="flex items-center px-3 py-2 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition duration-150 ease-in-out cursor-pointer">
+          <div className="flex items-center px-3 py-2 text-gray-800 rounded-full bg-white bg-opacity-70 shadow-lg hover:bg-gray-200 transition duration-150 ease-in-out cursor-pointer">
             <span className="mr-2 font-semibold text-blue-600">
               {session.data.user.credits}
             </span>
@@ -107,19 +107,6 @@ export default function Header() {
       </form>
     );
   }
-
-  <header className="fixed inset-x-0 top-0 h-16 z-50 flex items-center px-4 sm:px-6 lg:px-8 bg-opacity-90 backdrop-blur-sm border-b border-gray-200 backdrop-filter dark:border-gray-800 dark:bg-gray-950/90">
-    <nav className="flex-1 flex items-center justify-between">
-      <Link className="flex items-center" href="/">
-        <span className="ml-2 font-extrabold text-xl tracking-tight">
-          Nibble Feed
-        </span>
-      </Link>
-      <div className="flex flex-1 justify-end items-center space-x-4">
-        {authContent}
-      </div>
-    </nav>
-  </header>;
 
   return (
     <header className="fixed inset-x-0 top-0 h-16 z-50 flex items-center px-4 sm:px-6 lg:px-8 bg-opacity-90 backdrop-blur-sm border-b border-gray-200 backdrop-filter dark:border-gray-800 dark:bg-gray-950/90">
