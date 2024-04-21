@@ -9,6 +9,13 @@ import paths from "@/paths";
 import { revalidatePath } from "next/cache";
 import { getUser, deductCredits } from "./user";
 import { NIBBLE_CREDIT_COST } from "@/constants";
+import {
+  formatTopic,
+  // generateFlashcardStep,
+  // generateQuizStep,
+  // generateSummaryStep,
+  // generateTextStep,
+} from "@/lib/langchain";
 
 interface CreateNibbleParams {
   topic: string;
@@ -24,23 +31,25 @@ export async function createNibble(
     redirect(paths.signIn());
   }
 
-  // Deduct the user's credit balance
   const user = await getUser(userId);
 
   if (user.credits < NIBBLE_CREDIT_COST) {
     throw new Error("You do not have enough credits to create a Nibble.");
   }
 
+  const topic = await formatTopic(params.topic);
+
   const [nibble] = await db
     .insert(nibbles)
     .values({
-      topic: params.topic,
+      topic,
       userId,
       status: "creating",
     })
     .returning();
 
   await deductCredits(userId, NIBBLE_CREDIT_COST);
+  revalidatePath(paths.nibblesList());
 
   return nibble;
 }

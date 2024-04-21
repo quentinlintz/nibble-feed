@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, Wand } from "lucide-react";
 
 import { useToast } from "./ui/use-toast";
 import { Toaster } from "./ui/toaster";
@@ -93,11 +93,12 @@ export function NibbleForm() {
         <Button type="submit" disabled={isLoading}>
           {isLoading ? (
             <div className="flex flex-row gap-2">
-              <Loader2 className="animate-spin" />
-              Creating Nibble
+              <Loader2 className="animate-spin" /> Creating Nibble
             </div>
           ) : (
-            "Generate Study Guide"
+            <div className="flex flex-row gap-2">
+              <Wand className="h-5 w-5" /> Generate Study Guide
+            </div>
           )}
         </Button>
       </form>
