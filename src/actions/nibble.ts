@@ -9,16 +9,8 @@ import paths from "@/paths";
 import { revalidatePath } from "next/cache";
 import { getUser, deductCredits } from "./user";
 import { NIBBLE_CREDIT_COST } from "@/constants";
-import {
-  formatTopic,
-  generateFlashcardStep,
-  generateQuizStep,
-  generateSummaryStep,
-  // generateFlashcardStep,
-  // generateQuizStep,
-  // generateSummaryStep,
-  generateTextStep,
-} from "@/lib/langchain";
+import { formatTopic } from "@/lib/langchain";
+import { qstashClient } from "@/lib/qstash";
 
 interface CreateNibbleParams {
   topic: string;
@@ -50,6 +42,21 @@ export async function createNibble(
       status: "creating",
     })
     .returning();
+
+  const stepTypes = ["text", "quiz", "flashcard", "summary"];
+  await Promise.all(
+    stepTypes.map((stepType, index) =>
+      qstashClient.publishJSON({
+        url: `${process.env.APP_URL}/api/step`,
+        body: {
+          nibbleId: nibble.id,
+          stepNumber: index + 1,
+          topic,
+          stepType,
+        },
+      })
+    )
+  );
 
   await deductCredits(userId, NIBBLE_CREDIT_COST);
   revalidatePath(paths.nibblesList());

@@ -43,6 +43,8 @@ export const SummaryStepSchema = z.object({
     .array(z.string())
     .describe(
       "A list of concise points summarizing the main ideas of the topic."
-    ),
+    )
+    .min(3)
+    .max(6),
 });
 export type SummaryStepType = z.infer<typeof SummaryStepSchema>;
