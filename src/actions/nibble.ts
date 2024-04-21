@@ -11,10 +11,13 @@ import { getUser, deductCredits } from "./user";
 import { NIBBLE_CREDIT_COST } from "@/constants";
 import {
   formatTopic,
+  generateFlashcardStep,
+  generateQuizStep,
+  generateSummaryStep,
   // generateFlashcardStep,
   // generateQuizStep,
   // generateSummaryStep,
-  // generateTextStep,
+  generateTextStep,
 } from "@/lib/langchain";
 
 interface CreateNibbleParams {
