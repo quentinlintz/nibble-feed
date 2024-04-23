@@ -14,7 +14,7 @@ import {
   PopoverContent,
 } from "@radix-ui/react-popover";
 import { Button } from "./ui/button";
-import { Plus, List, LogOut } from "lucide-react";
+import { Plus, List, LogOut, ChevronUp, ChevronDown } from "lucide-react";
 import * as actions from "@/actions";
 
 export default function Header() {
@@ -45,6 +45,9 @@ export default function Header() {
                   .join("")}
               </AvatarFallback>
             </ReactAvatar>
+            <span className="ml-2">
+              {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </span>
           </div>
         </PopoverTrigger>
         <PopoverContent
