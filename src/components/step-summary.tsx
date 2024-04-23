@@ -1,10 +1,8 @@
 "use client";
 
-interface StepSummaryProps {
-  points: string[];
-}
+import { SummaryStepType } from "@/lib/schemas";
 
-export default function StepSummary({ points }: StepSummaryProps) {
+export default function StepSummary({ points }: SummaryStepType) {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-5">
       <div className="mb-10">

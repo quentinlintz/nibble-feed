@@ -2,16 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FlashcardStepType } from "@/lib/schemas";
 
-interface StepFlashcardProps {
-  term: string;
-  definition: string;
-}
-
-export default function StepFlashcard({
-  term,
-  definition,
-}: StepFlashcardProps) {
+export default function StepFlashcard({ term, definition }: FlashcardStepType) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const cardVariants = {

@@ -1,14 +1,15 @@
 import { z } from "zod";
 
 export const TextStepSchema = z.object({
-  description: z
+  header: z
     .string()
-    .describe("A brief description or introduction of the topic."),
-  details: z.string().describe("Detailed information expanding on the topic."),
-  example: z
+    .describe("The header for this particular section of the topic."),
+  intro: z
     .string()
-    .optional()
-    .describe("An example to illustrate the topic (optional)."),
+    .describe("An introductory paragraph setting the stage for the topic."),
+  content: z
+    .string()
+    .describe("A thorough exploration of the topic with detailed information."),
 });
 export type TextStepType = z.infer<typeof TextStepSchema>;
 

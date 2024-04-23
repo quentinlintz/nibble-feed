@@ -2,20 +2,14 @@
 
 import { useState } from "react";
 import { Button } from "./ui/button";
-
-interface StepQuizProps {
-  question: string;
-  options: string[];
-  correctOption: string;
-  explanation: string;
-}
+import { QuizStepType } from "@/lib/schemas";
 
 export default function StepQuiz({
   question,
   options,
   correctOption,
   explanation,
-}: StepQuizProps) {
+}: QuizStepType) {
   const [reveal, setReveal] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
