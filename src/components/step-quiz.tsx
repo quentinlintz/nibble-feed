@@ -36,7 +36,7 @@ export default function StepQuiz({
   const getCursorStyle = () => (reveal ? "cursor-not-allowed" : "");
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-5">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
       <div className="mb-10">
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Quiz</h2>
         <p className="text-lg text-gray-700 mt-4 mb-6">{question}</p>
