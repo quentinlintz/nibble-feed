@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { Step, steps } from "@/db/schema";
+import { eq, asc } from "drizzle-orm";
 
 interface CreateStepParams {
   nibbleId: string;
@@ -24,4 +25,12 @@ export async function createStep(params: CreateStepParams): Promise<Step> {
     .returning();
 
   return step;
+}
+
+export async function getStepsForNibble(nibbleId: string): Promise<Step[]> {
+  return await db
+    .select()
+    .from(steps)
+    .where(eq(steps.nibbleId, nibbleId))
+    .orderBy(asc(steps.stepNumber));
 }
