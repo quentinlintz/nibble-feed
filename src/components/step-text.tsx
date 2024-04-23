@@ -1,7 +1,5 @@
 "use client";
 
-import { desc } from "drizzle-orm";
-
 interface StepTextProps {
   description: string;
   details: string;
