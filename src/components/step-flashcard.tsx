@@ -6,13 +6,11 @@ import { motion } from "framer-motion";
 interface StepFlashcardProps {
   term: string;
   definition: string;
-  importance?: string;
 }
 
 export default function StepFlashcard({
   term,
   definition,
-  importance,
 }: StepFlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 

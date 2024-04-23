@@ -37,7 +37,7 @@ export async function generateStep<T>(
   const fixParser = OutputFixingParser.fromLLM(
     new ChatOpenAI({
       model: GPT_4_1106_PREVIEW,
-      temperature: 0,
+      temperature: 0.2,
       maxTokens: 256,
     }),
     parser
@@ -45,7 +45,7 @@ export async function generateStep<T>(
 
   const model = new ChatOpenAI({
     model: GPT_4_1106_PREVIEW,
-    temperature: 0,
+    temperature: 0.2,
     maxTokens: 256,
     modelKwargs: {
       response_format: {

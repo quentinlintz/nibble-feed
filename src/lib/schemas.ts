@@ -31,10 +31,6 @@ export const FlashcardStepSchema = z.object({
     .string()
     .describe("The term or concept being quizzed on the flashcard."),
   definition: z.string().describe("The definition or explanation of the term."),
-  importance: z
-    .string()
-    .optional()
-    .describe("The importance of the term in the larger context (optional)."),
 });
 export type FlashcardStepType = z.infer<typeof FlashcardStepSchema>;
 
@@ -45,6 +41,6 @@ export const SummaryStepSchema = z.object({
       "A list of concise points summarizing the main ideas of the topic."
     )
     .min(3)
-    .max(6),
+    .max(5),
 });
 export type SummaryStepType = z.infer<typeof SummaryStepSchema>;
