@@ -28,10 +28,19 @@ export const QuizStepSchema = z.object({
 export type QuizStepType = z.infer<typeof QuizStepSchema>;
 
 export const FlashcardStepSchema = z.object({
-  term: z
-    .string()
-    .describe("The term or concept being quizzed on the flashcard."),
-  definition: z.string().describe("The definition or explanation of the term."),
+  cards: z
+    .array(
+      z.object({
+        term: z
+          .string()
+          .describe("The term or concept being quizzed on the flashcard."),
+        definition: z
+          .string()
+          .describe("The definition or explanation of the term."),
+      })
+    )
+    .min(2)
+    .max(4),
 });
 export type FlashcardStepType = z.infer<typeof FlashcardStepSchema>;
 

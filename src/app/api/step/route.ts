@@ -27,13 +27,13 @@ async function handler(request: NextRequest) {
       prompt = TEXT_STEP_PROMPT;
       schema = TextStepSchema;
       break;
-    case "quiz":
-      prompt = QUIZ_STEP_PROMPT;
-      schema = QuizStepSchema;
-      break;
     case "flashcard":
       prompt = FLASHCARD_STEP_PROMPT;
       schema = FlashcardStepSchema;
+      break;
+    case "quiz":
+      prompt = QUIZ_STEP_PROMPT;
+      schema = QuizStepSchema;
       break;
     case "summary":
       prompt = SUMMARY_STEP_PROMPT;
@@ -52,7 +52,12 @@ async function handler(request: NextRequest) {
     content,
   });
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({
+    success: true,
+    nibbleId,
+    stepNumber,
+    stepType,
+  });
 }
 
 export const POST = verifySignatureAppRouter(handler);

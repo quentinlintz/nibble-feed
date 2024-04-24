@@ -31,9 +31,9 @@ export default function StepQuiz({
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
-      <div className="mb-10">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Quiz</h2>
-        <p className="text-lg text-gray-700 mt-4 mb-6">{question}</p>
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold text-gray-900">Quiz</h2>
+        <p className="text-lg text-gray-700 mt-2">{question}</p>
       </div>
       <div>
         <div className="flex flex-col gap-2">

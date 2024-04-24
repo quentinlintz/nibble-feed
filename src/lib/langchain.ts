@@ -38,7 +38,7 @@ export async function generateStep<T>(
     new ChatOpenAI({
       model: GPT_4_1106_PREVIEW,
       temperature: 0.2,
-      maxTokens: 256,
+      maxTokens: 512,
     }),
     parser
   );
@@ -46,7 +46,7 @@ export async function generateStep<T>(
   const model = new ChatOpenAI({
     model: GPT_4_1106_PREVIEW,
     temperature: 0.2,
-    maxTokens: 256,
+    maxTokens: 512,
     modelKwargs: {
       response_format: {
         type: "json_object",

@@ -43,7 +43,7 @@ export async function createNibble(
     })
     .returning();
 
-  const stepTypes = ["text", "quiz", "flashcard", "summary"];
+  const stepTypes = ["text", "flashcard", "quiz", "summary"];
   await Promise.all(
     stepTypes.map((stepType, index) =>
       qstashClient.publishJSON({
@@ -54,6 +54,7 @@ export async function createNibble(
           topic,
           stepType,
         },
+        callback: `${process.env.APP_URL}/api/step/callback`,
       })
     )
   );
@@ -104,4 +105,17 @@ export async function deleteNibble(nibble: Nibble): Promise<void> {
   }
 
   revalidatePath(paths.nibblesList());
+}
+
+export async function updateNibbleStatus(
+  id: string,
+  status: string
+): Promise<Nibble> {
+  const [nibble] = await db
+    .update(nibbles)
+    .set({ status: "complete" })
+    .where(eq(nibbles.id, id))
+    .returning();
+
+  return nibble;
 }
