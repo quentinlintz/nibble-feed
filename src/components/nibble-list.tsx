@@ -105,7 +105,7 @@ export default function NibbleList<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="text-lg">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -116,7 +116,7 @@ export default function NibbleList<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24">
+                <TableCell colSpan={columns.length} className="text-lg h-24">
                   No Nibbles found.
                 </TableCell>
               </TableRow>
