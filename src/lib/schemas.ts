@@ -3,7 +3,9 @@ import { z } from "zod";
 export const TextStepSchema = z.object({
   header: z
     .string()
-    .describe("The header for this particular section of the topic."),
+    .describe(
+      "A short, catchy header for this section, different from the topic."
+    ),
   intro: z
     .string()
     .describe("An introductory paragraph setting the stage for the topic."),

@@ -54,7 +54,6 @@ export async function createNibble(
           topic,
           stepType,
         },
-        callback: `${process.env.APP_URL}/api/step/callback`,
       })
     )
   );

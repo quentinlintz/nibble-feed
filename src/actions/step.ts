@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { Step, steps } from "@/db/schema";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, count } from "drizzle-orm";
 
 interface CreateStepParams {
   nibbleId: string;

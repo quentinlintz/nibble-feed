@@ -105,4 +105,5 @@ export const steps = pgTable("step", {
 
 export type Nibble = InferSelectModel<typeof nibbles>;
 export type Step = InferSelectModel<typeof steps>;
+export type StepType = "text" | "flashcard" | "quiz" | "summary";
 export type User = InferSelectModel<typeof users>;
