@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { Nibble, nibbles } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
 import paths from "@/paths";
 import { revalidatePath } from "next/cache";
@@ -72,7 +72,11 @@ export async function getNibbles(): Promise<Nibble[]> {
     redirect(`${paths.signIn()}?callbackUrl=/nibbles`);
   }
 
-  return db.select().from(nibbles).where(eq(nibbles.userId, userId));
+  return db
+    .select()
+    .from(nibbles)
+    .where(eq(nibbles.userId, userId))
+    .orderBy(desc(nibbles.createdAt));
 }
 
 export async function getNibble(id: string): Promise<Nibble> {

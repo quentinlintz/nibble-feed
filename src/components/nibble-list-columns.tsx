@@ -31,6 +31,21 @@ export const columns = (
     },
   },
   {
+    accessorKey: "createdAt",
+    header: "Created At",
+    cell: ({ row: { original } }) => {
+      const { createdAt } = original;
+
+      return new Date(createdAt).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    },
+  },
+  {
     id: "actions",
     cell: ({ row: { original } }) => {
       return (
