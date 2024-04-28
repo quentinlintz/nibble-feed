@@ -6,7 +6,8 @@ export const GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
 export const CREATE_NIBBLE_TOPIC_PROMPT = `You are converting study guide names into more formal and simple study guide names.
   * Be brief
   * Do not use special characters
-  * Avoid using words like "guide", "essentials", "basics", etc...`;
+  * Avoid using words like "guide", "essentials", "basics", etc...
+  * If the study guide name is not appropriate as a topic, please provide a new topic`;
 const FORMAT_INSTRUCTIONS =
   "Wrap the output in `json` tags.\n{formatInstructions}";
 export const TEXT_STEP_PROMPT =

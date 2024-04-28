@@ -1,5 +1,6 @@
 import * as actions from "@/actions";
 import StepList from "@/components/step-list";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface NibbleShowPageProps {
   params: {

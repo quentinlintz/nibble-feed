@@ -59,7 +59,10 @@ export function NibbleForm() {
     setIsLoading(true);
     let nibble: Nibble;
     try {
-      nibble = await actions.createNibble({ topic: data.topic });
+      nibble = await actions.createNibble({
+        inputTopic: data.topic,
+        stepList: ["text", "flashcard", "quiz", "summary"],
+      });
       router.push(paths.nibblesShow(nibble.id));
     } catch (error) {
       toast({

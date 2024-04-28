@@ -1,4 +1,3 @@
-import { createStep } from "@/actions/step";
 import {
   FLASHCARD_STEP_PROMPT,
   QUIZ_STEP_PROMPT,
@@ -15,10 +14,12 @@ import {
 import { verifySignatureAppRouter } from "@upstash/qstash/dist/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import * as actions from "@/actions";
 
 async function handler(request: NextRequest) {
   const body = await request.json();
-  const { nibbleId, stepNumber, topic, stepType } = body;
+  const { id, topic, stepType } = body;
+
   let prompt: string;
   let schema: z.Schema;
 
@@ -45,19 +46,9 @@ async function handler(request: NextRequest) {
 
   const stepJson = await generateStep(topic, prompt, schema);
   const content = JSON.stringify(stepJson);
-  await createStep({
-    nibbleId,
-    stepNumber,
-    stepType,
-    content,
-  });
+  await actions.updateStep(id, content);
 
-  return NextResponse.json({
-    success: true,
-    nibbleId,
-    stepNumber,
-    stepType,
-  });
+  return NextResponse.json({ success: true });
 }
 
 export const POST = verifySignatureAppRouter(handler);

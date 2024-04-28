@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "@/db";
-import { Nibble, nibbles } from "@/db/schema";
+import { Nibble, nibbles, steps, StepType } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
 import paths from "@/paths";
@@ -11,9 +11,11 @@ import { getUser, deductCredits } from "./user";
 import { NIBBLE_CREDIT_COST } from "@/constants";
 import { formatTopic } from "@/lib/langchain";
 import { qstashClient } from "@/lib/qstash";
+import * as actions from "@/actions";
 
 interface CreateNibbleParams {
-  topic: string;
+  inputTopic: string;
+  stepList: StepType[];
 }
 
 export async function createNibble(
@@ -21,6 +23,7 @@ export async function createNibble(
 ): Promise<Nibble> {
   const session = await auth();
   const userId = session?.user?.id;
+  const { inputTopic, stepList } = params;
 
   if (!userId) {
     redirect(paths.signIn());
@@ -32,7 +35,7 @@ export async function createNibble(
     throw new Error("You do not have enough credits to create a Nibble.");
   }
 
-  const topic = await formatTopic(params.topic);
+  const topic = await formatTopic(inputTopic);
 
   const [nibble] = await db
     .insert(nibbles)
@@ -43,19 +46,22 @@ export async function createNibble(
     })
     .returning();
 
-  const stepTypes = ["text", "flashcard", "quiz", "summary"];
   await Promise.all(
-    stepTypes.map((stepType, index) =>
-      qstashClient.publishJSON({
+    stepList.map(async (stepType, index) => {
+      const step = await actions.createStep({
+        nibbleId: nibble.id,
+        stepNumber: index + 1,
+        stepType,
+      });
+      return qstashClient.publishJSON({
         url: `${process.env.APP_URL}/api/step`,
         body: {
-          nibbleId: nibble.id,
-          stepNumber: index + 1,
+          id: step.id,
           topic,
-          stepType,
+          stepType: step.stepType,
         },
-      })
-    )
+      });
+    })
   );
 
   await deductCredits(userId, NIBBLE_CREDIT_COST);

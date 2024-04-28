@@ -8,4 +8,4 @@ export {
   updateNibbleStatus,
 } from "./nibble";
 export { getUser, deductCredits } from "./user";
-export { createStep, getStepsForNibble } from "./step";
+export { createStep, updateStep, getStepsForNibble } from "./step";

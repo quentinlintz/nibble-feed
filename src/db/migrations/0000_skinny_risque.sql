@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS "nibble" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"topic" text NOT NULL,
 	"userId" text NOT NULL,
-	"status" text NOT NULL,
+	"status" text DEFAULT 'creating' NOT NULL,
 	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS "step" (
 	"nibbleId" text NOT NULL,
 	"stepNumber" integer NOT NULL,
 	"stepType" text NOT NULL,
-	"content" jsonb NOT NULL,
+	"content" jsonb,
+	"status" text DEFAULT 'creating' NOT NULL,
 	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
 );

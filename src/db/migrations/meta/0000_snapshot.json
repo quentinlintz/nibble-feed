@@ -1,5 +1,5 @@
 {
-  "id": "57a076fa-35a8-4e49-a052-a951a7b7a5c4",
+  "id": "cb45a694-7c3c-4c42-8ed0-633079a2376b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -129,7 +129,8 @@
           "name": "status",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'creating'"
         },
         "createdAt": {
           "name": "createdAt",
@@ -240,7 +241,14 @@
           "name": "content",
           "type": "jsonb",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'creating'"
         },
         "createdAt": {
           "name": "createdAt",

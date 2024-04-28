@@ -73,7 +73,7 @@ export const nibbles = pgTable("nibble", {
     .references(() => users.id, {
       onDelete: "cascade",
     }),
-  status: text("status").notNull(),
+  status: text("status").notNull().default("creating"),
   createdAt: timestamp("createdAt", { mode: "date" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
@@ -94,7 +94,8 @@ export const steps = pgTable("step", {
     }),
   stepNumber: integer("stepNumber").notNull(),
   stepType: text("stepType").notNull(),
-  content: jsonb("content").notNull(),
+  content: jsonb("content"),
+  status: text("status").notNull().default("creating"),
   createdAt: timestamp("createdAt", { mode: "date" })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
@@ -105,5 +106,7 @@ export const steps = pgTable("step", {
 
 export type Nibble = InferSelectModel<typeof nibbles>;
 export type Step = InferSelectModel<typeof steps>;
-export type StepType = "text" | "flashcard" | "quiz" | "summary";
 export type User = InferSelectModel<typeof users>;
+
+export type StepType = "text" | "flashcard" | "quiz" | "summary";
+export type StatusType = "creating" | "failed" | "completed";

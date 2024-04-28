@@ -2,13 +2,13 @@
 
 import { db } from "@/db";
 import { Step, steps } from "@/db/schema";
-import { eq, asc, count } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 interface CreateStepParams {
   nibbleId: string;
   stepNumber: number;
   stepType: string;
-  content: string;
+  content?: string;
 }
 
 export async function createStep(params: CreateStepParams): Promise<Step> {
@@ -22,6 +22,19 @@ export async function createStep(params: CreateStepParams): Promise<Step> {
       stepType,
       content,
     })
+    .returning();
+
+  return step;
+}
+
+export async function updateStep(
+  stepId: string,
+  content: string
+): Promise<Step> {
+  const [step] = await db
+    .update(steps)
+    .set({ content, status: "completed", updatedAt: new Date() })
+    .where(eq(steps.id, stepId))
     .returning();
 
   return step;
